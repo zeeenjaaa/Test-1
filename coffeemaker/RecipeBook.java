@@ -18,7 +18,7 @@ public class RecipeBook {
 	/** Array of recipes in coffee maker*/
 	private Recipe [] recipeArray;
 	/** Number of recipes in coffee maker */
-	private final int NUM_RECIPES = 4; 
+	private final int NUM_RECIPES = 3; 
 	
 	/**
 	 * Default constructor for a RecipeBook.
@@ -68,9 +68,12 @@ public class RecipeBook {
 	 * @return String
 	 */
 	public synchronized String deleteRecipe(int recipeToDelete) {
+		if (recipeToDelete < 0 || recipeToDelete >= recipeArray.length) {
+			return null;
+		}
 		if (recipeArray[recipeToDelete] != null) {
 			String recipeName = recipeArray[recipeToDelete].getName();
-			recipeArray[recipeToDelete] = new Recipe();
+			recipeArray[recipeToDelete] = null;
 			return recipeName;
 		} else {
 			return null;
@@ -85,10 +88,13 @@ public class RecipeBook {
 	 * @return String
 	 */
 	public synchronized String editRecipe(int recipeToEdit, Recipe newRecipe) {
+		if (recipeToEdit < 0 || recipeToEdit >= recipeArray.length) {
+			return null;
+		}
 		if (recipeArray[recipeToEdit] != null) {
 			String recipeName = recipeArray[recipeToEdit].getName();
-			newRecipe.setName("");
 			recipeArray[recipeToEdit] = newRecipe;
+			newRecipe.setName(recipeName);
 			return recipeName;
 		} else {
 			return null;

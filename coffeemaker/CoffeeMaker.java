@@ -20,9 +20,9 @@ import edu.ncsu.csc326.coffeemaker.exceptions.InventoryException;
  */
 public class CoffeeMaker {
 	/** Array of recipes in coffee maker */
-	private static RecipeBook recipeBook;
+	private RecipeBook recipeBook;
 	/** Inventory of the coffee maker */
-    private static Inventory inventory;
+    private Inventory inventory;
 	
     /**
      * Constructor for the coffee maker
@@ -99,9 +99,12 @@ public class CoffeeMaker {
     public synchronized int makeCoffee(int recipeToPurchase, int amtPaid) {
         int change = 0;
         
-        if (getRecipes()[recipeToPurchase] == null) {
-        	change = amtPaid;
-        } else if (getRecipes()[recipeToPurchase].getPrice() <= amtPaid) {
+        if (recipeToPurchase < 0 || 
+            recipeToPurchase >= getRecipes().length || 
+            getRecipes()[recipeToPurchase] == null) {
+            	change = amtPaid;
+        } 
+        else if (getRecipes()[recipeToPurchase].getPrice() <= amtPaid) {
         	if (inventory.useIngredients(getRecipes()[recipeToPurchase])) {
         		change = amtPaid - getRecipes()[recipeToPurchase].getPrice();
         	} else {
